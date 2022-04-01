@@ -1,9 +1,17 @@
-package com.example.spring;
+package com.example.spring.admin;
 
+import com.example.spring.modal.product;
+import com.example.spring.serivice.ProductInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -13,21 +21,25 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 @Controller
-public class HomeController {
+@RequestMapping("/admin")
+public class adminIndex {
     @Value("${config.upload_folder}")
     String UPLOAD_FOLDER;
+    @Autowired
+    ProductInterface productInterface;
 
     @GetMapping("/index")
-    public String index(HttpSession session){
-//        session.setAttribute("abcz","abc");
-//        session.setMaxInactiveInterval(10);
-        return "index";
+    public String index(Model model){
+        List<product> lstProduct = productInterface.getAll();
+        model.addAttribute("lstProduct",lstProduct);
+        return "adminView";
     }
 
-    @PostMapping("/upload")
-    public void upload(@RequestParam("file") MultipartFile file){
+    @PostMapping("/createProduct")
+    public String createProduct(@RequestParam("file")MultipartFile file, product p){
         String realativeFilePath = null;
         Date date = new Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -46,6 +58,14 @@ public class HomeController {
         catch (Exception e){
             System.out.println(e);
         }
+        p.setNameImage(realativeFilePath);
+        productInterface.createProduct(p);
+        return "redirect:/admin/index";
     }
 
+    @GetMapping("/redrectCreateForm")
+    public String redrectCreateForm(Model model){
+        model.addAttribute("productt", new product());
+        return "createProduct";
+    }
 }

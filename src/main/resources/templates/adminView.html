@@ -1,0 +1,33 @@
+<div th:replace="fragment/header.html"></div>
+    <div class="container mt-5">
+        <form method="get" th:action="@{/admin/redrectCreateForm}">
+            <button class="btn btn-primary" type="submit">
+                Thêm sản phẩm
+            </button>
+        </form>
+        <table class="table text-center">
+            <th>
+                <tr>
+                    <td>
+                        Tên sản phẩm
+                    </td>
+                    <td>
+                        Ảnh sản phẩm
+                    </td>
+
+                </tr>
+            </th>
+            <tbody>
+            <tr th:each="item : ${lstProduct}">
+                <td th:text="${item.getName()}">
+                </td>
+                <td>
+                    <img style="widht:100px;height: 100px" th:src="|@{/uploads/}${item.getNameImage()}|">
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<div th:replace="fragment/footer.html"></div>

@@ -1,0 +1,40 @@
+<div th:replace="fragment/header.html"></div>
+
+<div class="container mt-5">
+        <form method="get" th:action="@{/user/dohang}">
+            <button class="btn btn-warning">Do hang</button>
+        </form>
+        <div class="row">
+            <div class="col-md-4 p-3" th:each="item : ${lstProduct}">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" th:src="|@{/uploads/}${item.getNameImage()}|" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${item.getName()}"></h5>
+                        <form method="get" th:action="|@{/user/addsession/}${item.getId()}|">
+                            <button class="btn btn-success" type="submit">Thêm vào dỏ hàng</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="mt-5" >
+        <nav aria-label="Page navigation example">
+                <ul class="pagination" >
+                    <li class="page-item" th:th:classappend="${pageIndex == item} ? 'active' : ''" th:each="item : ${#numbers.sequence(1, numberPage)}">
+                        <a th:href="|@{/user/index/}${item}/0|" th:text="${item}" class="page-link" href="#"></a>
+                    </li>
+                    <span class="page-list ml-2">
+                <span class="btn-group dropup">
+                    <select id="abc" onchange="location = this.value;" name="pageSize" class="form-control">
+                       <option th:selected="${pageSize == 1}" value="/user/index/-1/1">1</option>
+                         <option th:selected="${pageSize == 2}" value="/user/index/-1/2">2</option>
+                         <option th:selected="${pageSize == 3}" value="/user/index/-1/3">3</option>
+                    </select>
+                </span> bản ghi mỗi trang
+            </span>
+                </ul>
+        </nav>
+    </div>
+
+</div>
+<div th:replace="fragment/footer.html"></div>

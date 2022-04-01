@@ -1,0 +1,28 @@
+<div th:replace="fragment/header.html"></div>
+<div class="container mt-5">
+    <h1>Do hang neeeeeeeeeeeeeeeeeeee</h1>
+    <table class="table text-center">
+        <th>
+            <tr>
+                <td>
+                    Tên sản phẩm
+                </td>
+                <td>
+                    Ảnh sản phẩm
+                </td>
+
+            </tr>
+        </th>
+        <tbody>
+        <tr th:each="item : ${lstProduct}">
+            <td th:text="${item.getName()}">
+            </td>
+            <td>
+                <img style="widht:100px;height: 100px" th:src="|@{/uploads/}${item.getNameImage()}|">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="fragment/footer.html"></div>
